@@ -11,8 +11,22 @@ import LissajousExplorer from './components/LissajousExplorer';
 import FractalsExplorer from './components/FractalsExplorer';
 import ClassicCurvesExplorer from './components/ClassicCurvesExplorer';
 
+declare global {
+  interface Window {
+    vercount?: {
+      fetch: () => void;
+    };
+  }
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState<'brachistochrone' | 'cycloids' | 'lissajous' | 'fractals' | 'classic'>('brachistochrone');
+
+  React.useEffect(() => {
+    if (window.vercount && typeof window.vercount.fetch === 'function') {
+      window.vercount.fetch();
+    }
+  }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
@@ -161,12 +175,16 @@ export default function App() {
               <span>•</span>
               <span className="hover:text-slate-400 select-none">自相似碎形 (Fractals)</span>
             </div>
-            <div className="flex items-center">
-              <img 
-                src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Ftoydogcat.github.io%2Fsim-cycloid%2F&count_bg=%230891B2&title_bg=%230F172A&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=false" 
-                alt="Visitor Count"
-                className="h-5"
-              />
+            <div className="flex items-center gap-3 bg-slate-900/50 px-3 py-1.5 rounded-lg border border-slate-800/50">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Views</span>
+                <span id="vercount_value_site_pv" className="text-cyan-400 font-mono font-bold tracking-widest min-w-[20px] text-center">--</span>
+              </div>
+              <div className="h-3 w-px bg-slate-800" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Visitors</span>
+                <span id="vercount_value_site_uv" className="text-indigo-400 font-mono font-bold tracking-widest min-w-[20px] text-center">--</span>
+              </div>
             </div>
           </div>
         </div>
