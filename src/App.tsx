@@ -149,16 +149,25 @@ export default function App() {
             <p>© 2026 互動幾何學與古典力學探索套件 / 物理模擬器</p>
             <p className="text-[10px]">基於常規拉格朗日運動方程式與物理有限元前向歐拉法求解</p>
           </div>
-          <div className="flex gap-4">
-            <span className="hover:text-slate-400 select-none">等時性 (Tautochrone)</span>
-            <span>•</span>
-            <span className="hover:text-slate-400 select-none">外輪線 (Epitrochoid)</span>
-            <span>•</span>
-            <span className="hover:text-slate-400 select-none">內輪線 (Hypotrochoid)</span>
-            <span>•</span>
-            <span className="hover:text-slate-400 select-none">利薩茹 (Lissajous)</span>
-            <span>•</span>
-            <span className="hover:text-slate-400 select-none">自相似碎形 (Fractals)</span>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="flex gap-4">
+              <span className="hover:text-slate-400 select-none">等時性 (Tautochrone)</span>
+              <span>•</span>
+              <span className="hover:text-slate-400 select-none">外輪線 (Epitrochoid)</span>
+              <span>•</span>
+              <span className="hover:text-slate-400 select-none">內輪線 (Hypotrochoid)</span>
+              <span>•</span>
+              <span className="hover:text-slate-400 select-none">利薩茹 (Lissajous)</span>
+              <span>•</span>
+              <span className="hover:text-slate-400 select-none">自相似碎形 (Fractals)</span>
+            </div>
+            <div className="flex items-center">
+              <img 
+                src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Ftoydogcat.github.io%2Fsim-cycloid%2F&count_bg=%230891B2&title_bg=%230F172A&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=false" 
+                alt="Visitor Count"
+                className="h-5"
+              />
+            </div>
           </div>
         </div>
       </footer>
