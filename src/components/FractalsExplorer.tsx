@@ -52,26 +52,26 @@ export default function FractalsExplorer() {
 
   // Animation Loop for beautiful drawing effect
   useEffect(() => {
+    if (!animate) {
+      setProgress(1.0);
+      return;
+    }
+
     let lastTime = performance.now();
     const update = (now: number) => {
-      if (!animate) {
-        setProgress(1.0);
-        animationRef.current = requestAnimationFrame(update);
-        return;
-      }
       const dt = now - lastTime;
       lastTime = now;
 
       setProgress((prev) => {
         if (prev >= 1.0) {
-          // Slow loop back or hold
           return 1.0;
         }
-        // Build up slowly
-        return Math.min(1.0, prev + dt * 0.0008);
+        const next = Math.min(1.0, prev + dt * 0.0008);
+        if (next < 1.0) {
+          animationRef.current = requestAnimationFrame(update);
+        }
+        return next;
       });
-
-      animationRef.current = requestAnimationFrame(update);
     };
 
     animationRef.current = requestAnimationFrame(update);

@@ -40,7 +40,6 @@ export default function BrachistochroneSimulator() {
   // Simulation run state
   const [simTime, setSimTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [completionTimes, setCompletionTimes] = useState<Record<string, number | null>>({});
 
   // Computed paths data
   const [paths, setPaths] = useState<PathData[]>([]);
@@ -254,43 +253,22 @@ export default function BrachistochroneSimulator() {
 
   // Simulation timer tick (Frame-rate bound)
   useEffect(() => {
+    if (!isPlaying) return;
+
     let lastTime = performance.now();
+    const maxArrivalTime = paths.length > 0 ? Math.max(...paths.map((p) => p.arrivalTime)) : 0;
 
     const tick = (now: number) => {
-      if (!isPlaying) {
-        lastTime = now;
-        animationRef.current = requestAnimationFrame(tick);
-        return;
-      }
-
       // Multiply dt by safety speed multiplier
       const elapsedSec = ((now - lastTime) / 1000) * physics.speedFactor;
       lastTime = now;
 
       setSimTime((prevTime) => {
         const nextTime = prevTime + elapsedSec;
-        
-        // Check completions for each path
-        setPaths((prevPaths) => {
-          let allFinished = true;
-          const updated = prevPaths.map((p) => {
-            if (nextTime >= p.arrivalTime) {
-              if (!completionTimes[p.id]) {
-                setCompletionTimes((prev) => ({ ...prev, [p.id]: p.arrivalTime }));
-              }
-              return { ...p, isCompleted: true };
-            } else {
-              allFinished = false;
-              return p;
-            }
-          });
-
-          if (allFinished) {
-            setIsPlaying(false);
-          }
-          return updated;
-        });
-
+        if (nextTime >= maxArrivalTime) {
+          setIsPlaying(false);
+          return maxArrivalTime;
+        }
         return nextTime;
       });
 
@@ -301,13 +279,11 @@ export default function BrachistochroneSimulator() {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPlaying, completionTimes, physics.speedFactor, paths]);
+  }, [isPlaying, physics.speedFactor, paths]);
 
   const resetSimulation = () => {
     setIsPlaying(false);
     setSimTime(0);
-    setCompletionTimes({});
-    setPaths((prev) => prev.map((p) => ({ ...p, isCompleted: false })));
   };
 
   const getBeadPosition = (p: PathData) => {

@@ -126,15 +126,11 @@ export default function LissajousExplorer() {
 
   // Frame Update Loop
   useEffect(() => {
+    if (!isPlaying) return;
+
     let lastTime = performance.now();
 
     const update = (nowTime: number) => {
-      if (!isPlaying) {
-        lastTime = nowTime;
-        animationRef.current = requestAnimationFrame(update);
-        return;
-      }
-
       const dt = Math.min(nowTime - lastTime, 32);
       lastTime = nowTime;
 

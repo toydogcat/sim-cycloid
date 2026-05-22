@@ -86,10 +86,10 @@ export default function ClassicCurvesExplorer() {
   }, [t]);
 
   useEffect(() => {
+    if (!isPlaying) return;
+
     const update = () => {
-      if (isPlaying) {
-        setT((prev) => prev + 0.02 * speed);
-      }
+      setT((prev) => prev + 0.02 * speed);
       animationRef.current = requestAnimationFrame(update);
     };
     animationRef.current = requestAnimationFrame(update);
@@ -140,6 +140,7 @@ export default function ClassicCurvesExplorer() {
                      type === 'butterfly' ? 12 * Math.PI : 2 * Math.PI;
     const currentTheta = Math.min(tRef.current, maxTheta);
 
+    let firstPoint = true;
     for (let theta = 0; theta <= currentTheta; theta += 0.02) {
       let r = 0;
       if (type === 'rose') {
@@ -149,6 +150,7 @@ export default function ClassicCurvesExplorer() {
         if (val >= 0) {
           r = Math.sqrt(val);
         } else {
+          firstPoint = true;
           continue; 
         }
       } else if (type === 'archimedean') {
@@ -163,8 +165,9 @@ export default function ClassicCurvesExplorer() {
       const x = centerX + r * Math.cos(theta);
       const y = centerY - r * Math.sin(theta);
 
-      if (theta === 0) {
+      if (firstPoint) {
         ctx.moveTo(x, y);
+        firstPoint = false;
       } else {
         ctx.lineTo(x, y);
       }

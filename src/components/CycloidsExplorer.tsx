@@ -207,15 +207,11 @@ export default function CycloidsExplorer() {
 
   // Core animation update loop
   useEffect(() => {
+    if (!isPlaying) return;
+
     let lastTime = performance.now();
 
     const update = (nowTime: number) => {
-      if (!isPlaying) {
-        lastTime = nowTime;
-        animationRef.current = requestAnimationFrame(update);
-        return;
-      }
-
       const dt = Math.min(nowTime - lastTime, 32); // Clamp step to avoid jumps
       lastTime = nowTime;
 
