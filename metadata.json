@@ -1,0 +1,6 @@
+{
+  "name": "擺線與最速降線模擬器",
+  "description": "一個豐富互動的數學與物理模擬器，提供多種擺線（內擺線、外擺線、旋輪線）與最速降線（Brachistochrone）的重力模擬與多路徑時間分析。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
